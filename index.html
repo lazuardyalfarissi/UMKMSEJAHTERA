@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distribusi Pengiriman Gemblong UMKM SEJAHTERA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '🥮';
+            font-size: 4rem;
+            position: absolute;
+            top: 10px;
+            left: 30px;
+            opacity: 0.3;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 3px solid #dee2e6;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 15px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #6c757d;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-tab:hover {
+            background: rgba(108, 117, 125, 0.1);
+        }
+
+        .nav-tab.active {
+            color: #ff6b6b;
+            border-bottom-color: #ff6b6b;
+            background: white;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: 500px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #ff6b6b;
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+        }
+
+        .delivery-list {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .delivery-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid #ff6b6b;
+            transition: all 0.3s ease;
+        }
+
+        .delivery-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .delivery-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .delivery-id {
+            font-weight: bold;
+            color: #ff6b6b;
+            font-size: 1.1rem;
+        }
+
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-shipping {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .status-delivered {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .delivery-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .detail-icon {
+            width: 20px;
+            height: 20px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        .tracking-timeline {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: #ff6b6b;
+            border-radius: 50%;
+        }
+
+        .timeline-content {
+            margin-left: 20px;
+        }
+
+        .timeline-time {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+
+        .timeline-text {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            padding-left: 45px;
+        }
+
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .delivery-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Gemblong UMKM SEJAHTERA Distribution</h1>
+            <p>Sistem Manajemen Distribusi & Pengiriman Gemblong Tradisional</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('dashboard')">📊 Dashboard</button>
+            <button class="nav-tab" onclick="showTab('orders')">📦 Pesanan</button>
+            <button class="nav-tab" onclick="showTab('tracking')">🚚 Tracking</button>
+            <button class="nav-tab" onclick="showTab('add-order')">➕ Tambah Pesanan</button>
+        </div>
+
+        <div class="content">
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalOrders">156</div>
+                        <div class="stat-label">Total Pesanan</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="pendingOrders">23</div>
+                        <div class="stat-label">Menunggu Pengiriman</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="shippingOrders">45</div>
+                        <div class="stat-label">Dalam Pengiriman</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="deliveredOrders">88</div>
+                        <div class="stat-label">Terkirim</div>
+                    </div>
+                </div>
+
+                <h3 style="margin-bottom: 20px; color: #333;">Pengiriman Hari Ini</h3>
+                <div class="delivery-list">
+                    <div class="delivery-item">
+                        <div class="delivery-header">
+                            <div class="delivery-id">GM-2025-001</div>
+                            <div class="status-badge status-shipping">Dalam Pengiriman</div>
+                        </div>
+                        <div class="delivery-details">
+                            <div class="detail-item">
+                                <div class="detail-icon">👤</div>
+                                <div>
+                                    <strong>Penerima:</strong> Ibu Sari<br>
+                                    <small>Jl. Kemanggisan Raya No. 15, Jakarta Barat</small>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon">📦</div>
+                                <div>
+                                    <strong>Pesanan:</strong> 2 Box Gemblong Original<br>
+                                    <small>@ Rp 85.000 = Rp 170.000</small>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon">🚚</div>
+                                <div>
+                                    <strong>Kurir:</strong> Pak Budi<br>
+                                    <small>Estimasi: 14:00 WIB</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="delivery-item">
+                        <div class="delivery-header">
+                            <div class="delivery-id">GM-2025-002</div>
+                            <div class="status-badge status-pending">Menunggu</div>
+                        </div>
+                        <div class="delivery-details">
+                            <div class="detail-item">
+                                <div class="detail-icon">👤</div>
+                                <div>
+                                    <strong>Penerima:</strong> Bapak Agus<br>
+                                    <small>Jl. Pasar Minggu Raya No. 88, Jakarta Selatan</small>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon">📦</div>
+                                <div>
+                                    <strong>Pesanan:</strong> 3 Box Gemblong Keju<br>
+                                    <small>@ Rp 95.000 = Rp 285.000</small>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon">⏰</div>
+                                <div>
+                                    <strong>Jadwal:</strong> Besok<br>
+                                    <small>09:00 - 12:00 WIB</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Tab -->
+            <div id="orders" class="tab-content">
+                <div class="search-box">
+                    <input type="text" class="form-control" placeholder="Cari pesanan berdasarkan ID atau nama penerima..." id="searchOrders">
+                </div>
+
+                <div class="delivery-list" id="ordersList">
+                    <!-- Orders will be populated here -->
+                </div>
+            </div>
+
+            <!-- Tracking Tab -->
+            <div id="tracking" class="tab-content">
+                <div class="form-group">
+                    <label for="trackingId">Masukkan ID Pengiriman:</label>
+                    <input type="text" class="form-control" id="trackingId" placeholder="GM-2025-001">
+                </div>
+                <button class="btn btn-primary" onclick="trackOrder()">Lacak Pesanan</button>
+
+                <div id="trackingResult" class="tracking-timeline" style="display: none;">
+                    <h4 style="margin-bottom: 20px; color: #333;">Status Pengiriman</h4>
+                    <div id="timelineContainer"></div>
+                </div>
+            </div>
+
+            <!-- Add Order Tab -->
+            <div id="add-order" class="tab-content">
+                <form id="orderForm">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <label for="customerName">Nama Penerima:</label>
+                            <input type="text" class="form-control" id="customerName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerPhone">No. Telepon:</label>
+                            <input type="tel" class="form-control" id="customerPhone" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customerAddress">Alamat Lengkap:</label>
+                        <textarea class="form-control" id="customerAddress" rows="3" required></textarea>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <label for="productType">Jenis Gemblong:</label>
+                            <select class="form-control" id="productType" required>
+                                <option value="">Pilih Jenis</option>
+                                <option value="original">Gemblong Original</option>
+                                <option value="keju">Gemblong Keju</option>
+                                <option value="coklat">Gemblong Coklat</option>
+                                <option value="pandan">Gemblong Pandan</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity">Jumlah Box:</label>
+                            <input type="number" class="form-control" id="quantity" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Harga per Box:</label>
+                            <input type="number" class="form-control" id="price" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deliveryDate">Tanggal Pengiriman:</label>
+                        <input type="date" class="form-control" id="deliveryDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Catatan Khusus:</label>
+                        <textarea class="form-control" id="notes" rows="2" placeholder="Catatan untuk kurir atau penerima (opsional)"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Tambah Pesanan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data
+        let orders = [
+            {
+                id: 'GM-2025-001',
+                customer: 'Ibu Sari',
+                phone: '0812-3456-7890',
+                address: 'Jl. Kemanggisan Raya No. 15, Jakarta Barat',
+                product: 'Gemblong Original',
+                quantity: 2,
+                price: 85000,
+                total: 170000,
+                status: 'shipping',
+                courier: 'Pak Budi',
+                deliveryDate: '2025-05-28',
+                timeline: [
+                    { time: '28 Mei 2025, 08:00', text: 'Pesanan diterima dan sedang disiapkan' },
+                    { time: '28 Mei 2025, 10:30', text: 'Gemblong selesai diproduksi dan dikemas' },
+                    { time: '28 Mei 2025, 12:15', text: 'Paket diserahkan ke kurir Pak Budi' },
+                    { time: '28 Mei 2025, 13:45', text: 'Kurir dalam perjalanan menuju alamat tujuan' }
+                ]
+            },
+            {
+                id: 'GM-2025-002',
+                customer: 'Bapak Agus',
+                phone: '0856-7890-1234',
+                address: 'Jl. Pasar Minggu Raya No. 88, Jakarta Selatan',
+                product: 'Gemblong Keju',
+                quantity: 3,
+                price: 95000,
+                total: 285000,
+                status: 'pending',
+                deliveryDate: '2025-05-29',
+                timeline: [
+                    { time: '27 Mei 2025, 16:30', text: 'Pesanan diterima dan menunggu produksi' }
+                ]
+            },
+            {
+                id: 'GM-2025-003',
+                customer: 'Ibu Maya',
+                phone: '0821-9876-5432',
+                address: 'Jl. Menteng Raya No. 45, Jakarta Pusat',
+                product: 'Gemblong Coklat',
+                quantity: 1,
+                price: 90000,
+                total: 90000,
+                status: 'delivered',
+                deliveryDate: '2025-05-27',
+                timeline: [
+                    { time: '26 Mei 2025, 14:00', text: 'Pesanan diterima dan sedang disiapkan' },
+                    { time: '27 Mei 2025, 09:00', text: 'Gemblong selesai diproduksi dan dikemas' },
+                    { time: '27 Mei 2025, 11:30', text: 'Paket diserahkan ke kurir' },
+                    { time: '27 Mei 2025, 15:45', text: 'Paket berhasil diterima oleh Ibu Maya' }
+                ]
+            }
+        ];
+
+        function showTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Hide all nav tabs
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            // Load content based on tab
+            if (tabName === 'orders') {
+                loadOrders();
+            }
+        }
+
+        function loadOrders() {
+            const ordersList = document.getElementById('ordersList');
+            ordersList.innerHTML = '';
+
+            orders.forEach(order => {
+                const statusClass = `status-${order.status}`;
+                const statusText = {
+                    'pending': 'Menunggu',
+                    'shipping': 'Dalam Pengiriman',
+                    'delivered': 'Terkirim'
+                };
+
+                const orderElement = document.createElement('div');
+                orderElement.className = 'delivery-item';
+                orderElement.innerHTML = `
+                    <div class="delivery-header">
+                        <div class="delivery-id">${order.id}</div>
+                        <div class="status-badge ${statusClass}">${statusText[order.status]}</div>
+                    </div>
+                    <div class="delivery-details">
+                        <div class="detail-item">
+                            <div class="detail-icon">👤</div>
+                            <div>
+                                <strong>Penerima:</strong> ${order.customer}<br>
+                                <small>${order.address}</small>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-icon">📦</div>
+                            <div>
+                                <strong>Pesanan:</strong> ${order.quantity} Box ${order.product}<br>
+                                <small>@ Rp ${order.price.toLocaleString()} = Rp ${order.total.toLocaleString()}</small>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-icon">📅</div>
+                            <div>
+                                <strong>Tanggal:</strong> ${new Date(order.deliveryDate).toLocaleDateString('id-ID')}<br>
+                                <small>📞 ${order.phone}</small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                ordersList.appendChild(orderElement);
+            });
+        }
+
+        function trackOrder() {
+            const trackingId = document.getElementById('trackingId').value;
+            const order = orders.find(o => o.id === trackingId);
+            
+            if (order) {
+                displayTracking(order);
+            } else {
+                alert('ID pengiriman tidak ditemukan!');
+            }
+        }
+
+        function displayTracking(order) {
+            const trackingResult = document.getElementById('trackingResult');
+            const timelineContainer = document.getElementById('timelineContainer');
+            
+            timelineContainer.innerHTML = '';
+            
+            order.timeline.forEach(item => {
+                const timelineElement = document.createElement('div');
+                timelineElement.className = 'timeline-item';
+                timelineElement.innerHTML = `
+                    <div class="timeline-content">
+                        <div class="timeline-time">${item.time}</div>
+                        <div class="timeline-text">${item.text}</div>
+                    </div>
+                `;
+                timelineContainer.appendChild(timelineElement);
+            });
+            
+            trackingResult.style.display = 'block';
+        }
+
+        // Search functionality
+        document.getElementById('searchOrders').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredOrders = orders.filter(order => 
+                order.id.toLowerCase().includes(searchTerm) || 
+                order.customer.toLowerCase().includes(searchTerm)
+            );
+            
+            const ordersList = document.getElementById('ordersList');
+            ordersList.innerHTML = '';
+            
+            filteredOrders.forEach(order => {
+                // Same rendering logic as loadOrders()
+                const statusClass = `status-${order.status}`;
+                const statusText = {
+                    'pending': 'Menunggu',
+                    'shipping': 'Dalam Pengiriman',
+                    'delivered': 'Terkirim'
+                };
+
+                const orderElement = document.createElement('div');
+                orderElement.className = 'delivery-item';
+                orderElement.innerHTML = `
+                    <div class="delivery-header">
+                        <div class="delivery-id">${order.id}</div>
+                        <div class="status-badge ${statusClass}">${statusText[order.status]}</div>
+                    </div>
+                    <div class="delivery-details">
+                        <div class="detail-item">
+                            <div class="detail-icon">👤</div>
+                            <div>
+                                <strong>Penerima:</strong> ${order.customer}<br>
+                                <small>${order.address}</small>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-icon">📦</div>
+                            <div>
+                                <strong>Pesanan:</strong> ${order.quantity} Box ${order.product}<br>
+                                <small>@ Rp ${order.price.toLocaleString()} = Rp ${order.total.toLocaleString()}</small>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-icon">📅</div>
+                            <div>
+                                <strong>Tanggal:</strong> ${new Date(order.deliveryDate).toLocaleDateString('id-ID')}<br>
+                                <small>📞 ${order.phone}</small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                ordersList.appendChild(orderElement);
+            });
+        });
+
+        // Form submission
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const newOrder = {
+                id: `GM-2025-${String(orders.length + 1).padStart(3, '0')}`,
+                customer: document.getElementById('customerName').value,
+                phone: document.getElementById('customerPhone').value,
+                address: document.getElementById('customerAddress').value,
+                product: document.getElementById('productType').value,
+                quantity: parseInt(document.getElementById('quantity').value),
+                price: parseInt(document.getElementById('price').value),
+                total: parseInt(document.getElementById('quantity').value) * parseInt(document.getElementById('price').value),
+                status: 'pending',
+                deliveryDate: document.getElementById('deliveryDate').value,
+                timeline: [
+                    { time: new Date().toLocaleString('id-ID'), text: 'Pesanan diterima dan menunggu produksi' }
+                ]
+            };
+            
+            orders.push(newOrder);
+            
+            // Update statistics
+            updateStats();
+            
+            alert('Pesanan berhasil ditambahkan!');
+            document.getElementById('orderForm').reset();
+        });
+
+        function updateStats() {
+            document.getElementById('totalOrders').textContent = orders.length;
+            document.getElementById('pendingOrders').textContent = orders.filter(o => o.status === 'pending').length;
+            document.getElementById('shippingOrders').textContent = orders.filter(o => o.status === 'shipping').length;
+            document.getElementById('deliveredOrders').textContent = orders.filter(o => o.status === 'delivered').length;
+        }
+
+        // Initialize
+        updateStats();
+    </script>
+</body>
+</html>
